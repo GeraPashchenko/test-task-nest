@@ -14,4 +14,7 @@ export const configuration = () => ({
     POSTGRES_PORT: process.env.POSTGRES_PORT,
     POSTGRES_HOST: process.env.POSTGRES_HOST,
   },
+  mongodb: {
+    MONGO_URI: process.env.MONGO_URI,
+  },
 });
