@@ -11,6 +11,7 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { RequestTimerMiddleware } from './common/middleware/request-timer.middleware';
 import { DatabaseModule } from './database/database.module';
 import { HttpModule } from '@nestjs/axios';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { HttpModule } from '@nestjs/axios';
     }),
     ResidentModule,
     DatabaseModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [

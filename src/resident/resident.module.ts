@@ -7,7 +7,10 @@ import { DBType } from 'src/database-abstraction/types/enums/database-type.enum'
 import { DatabaseModule } from 'src/database/database.module';
 
 @Module({
-  imports: [DatabaseModule, DatabaseAbstractionModule.register(DBType.MONGODB)],
+  imports: [
+    DatabaseModule,
+    DatabaseAbstractionModule.register(DBType.POSTGRES),
+  ],
   controllers: [ResidentController],
   providers: [ResidentService, ResidentRepository],
   exports: [ResidentService],
