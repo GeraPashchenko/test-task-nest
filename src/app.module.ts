@@ -12,6 +12,7 @@ import { RequestTimerMiddleware } from './common/middleware/request-timer.middle
 import { DatabaseModule } from './database/database.module';
 import { HttpModule } from '@nestjs/axios';
 import { FileModule } from './file/file.module';
+import { WebcamGateway } from './webcam/webcam.gateway';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { FileModule } from './file/file.module';
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
     },
+    WebcamGateway,
   ],
 })
 export class AppModule {

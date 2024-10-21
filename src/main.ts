@@ -8,7 +8,9 @@ import { HttpExceptionFilter } from './common/filters/error-filter.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors();
+  app.enableCors({
+    origin: '*',
+  });
 
   app.useGlobalFilters(new HttpExceptionFilter());
 

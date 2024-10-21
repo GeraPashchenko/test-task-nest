@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Webcam Stream</title>
+</head>
+<body>
+    <video id="video" width="640" height="480" autoplay></video>
+    
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        const video = document.getElementById('video');
+        const socket = io('ws://localhost:3001/webcam');
+
+        // Access the webcam
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+                const mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.start(100); // Capture frames every 100ms
+
+                mediaRecorder.ondataavailable = function(event) {
+                    // Send each video chunk to the server as binary data
+                    socket.emit('webcam', event.data);
+                };
+            })
+            .catch((err) => {
+                console.error("Error accessing webcam: ", err);
+            });
+
+        // Log when the client connects
+        socket.on('connect', () => {
+            console.log('Connected to server');
+        });
+
+        // Receive video frames from the server and display them
+        socket.on('webcam_frame', (arrayBuffer) => {
+            const blob = new Blob([arrayBuffer], { type: 'video/webm' });
+            const url = URL.createObjectURL(blob);
+            video.src = url;
+        });
+
+    </script>
+</body>
+</html>
