@@ -18,20 +18,20 @@ services:
     networks:
       - db_network
 
-  # app:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.dev
-  #   ports:
-  #     - ${PORT}:${PORT}
-  #   depends_on:
-  #     postgresdb:
-  #       condition: service_healthy
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - db_network
-  #     - mongodb_network
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      postgresdb:
+        condition: service_healthy
+    env_file:
+      - .env
+    networks:
+      - db_network
+      - mongodb_network
 
   mongodb:
     image: mongo:latest
