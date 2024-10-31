@@ -1,0 +1,118 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:eu-central-1:676206917289:task-definition/nest_course:1",
+    "containerDefinitions": [
+        {
+            "name": "nestjs-app",
+            "image": "676206917289.dkr.ecr.eu-central-1.amazonaws.com/your-nestjs-app:latest",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "nestjs-app-3000-tcp",
+                    "containerPort": 3000,
+                    "hostPort": 3000,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "POSTGRES_USER",
+                    "value": "user"
+                },
+                {
+                    "name": "POSTGRES_PASSWORD",
+                    "value": "user"
+                },
+                {
+                    "name": "POSTGRES_PORT",
+                    "value": "5432"
+                },
+                {
+                    "name": "POSTGRES_DB",
+                    "value": "db"
+                },
+                {
+                    "name": "PORT",
+                    "value": "3000"
+                },
+                {
+                    "name": "POSTGRES_HOST",
+                    "value": "postgresdb"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "ulimits": [],
+            "systemControls": []
+        },
+        {
+            "name": "postgres",
+            "image": "postgres:latest",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "postgres-5432-tcp",
+                    "containerPort": 5432,
+                    "hostPort": 0,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": false,
+            "environment": [
+                {
+                    "name": "POSTGRES_USER",
+                    "value": "user"
+                },
+                {
+                    "name": "POSTGRES_PASSWORD",
+                    "value": "user"
+                },
+                {
+                    "name": "POSTGRES_DB",
+                    "value": "db"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "systemControls": []
+        }
+    ],
+    "family": "nest_course",
+    "executionRoleArn": "arn:aws:iam::676206917289:role/ecsTaskExecutionRole",
+    "networkMode": "bridge",
+    "revision": 1,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2"
+    ],
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "cpu": "1024",
+    "memory": "3072",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2024-10-31T14:57:41.050Z",
+    "registeredBy": "arn:aws:iam::676206917289:root",
+    "enableFaultInjection": false,
+    "tags": []
+}
