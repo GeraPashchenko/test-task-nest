@@ -194,6 +194,6 @@ jobs:
           sudo docker run -d --env-file .env -p ${{ vars.PORT }}:${{ vars.PORT }} \
             ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_DIR }}:latest
 
-          docker-compose up -d
+          sudo docker-compose up -d
 
-          docker ps
+          sudo docker ps
