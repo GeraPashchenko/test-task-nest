@@ -1,9 +1,9 @@
 # Table of contents
-[Project description](#project-description)
-[How to set up an architecture for a deployment](#how-to-set-up-an-architecture-for-a-deployment)
-[How to configure your local machine to have an access to EC2](#how-to-configure-your-local-machine-to-have-an-access-to-ec2)
-[What env params do you need to set in your GitHub repo for a CI/CD pipeline to work](#what-env-params-do-you-need-to-set-in-your-github-repo-for-a-ci/cd-pipeline-to-work)
-[How to test this project on web](#how-to-test-this-project-on-web)
+1. [Project description](#project-description)
+2. [How to set up an architecture for a deployment](#how-to-set-up-an-architecture-for-a-deployment)
+3. [How to configure your local machine to have an access to EC2](#how-to-configure-your-local-machine-to-have-an-access-to-ec2)
+4. [What env params do you need to set in your GitHub repo for a CI/CD pipeline to work](#what-env-params-do-you-need-to-set-in-your-github-repo-for-a-ci/cd-pipeline-to-work)
+5. [How to test this project on web](#how-to-test-this-project-on-web)
 
 ## Project description
    - This project has a CI/CD pipeline to deploy code to the EC2 instance.
