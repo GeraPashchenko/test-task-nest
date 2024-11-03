@@ -61,7 +61,7 @@ jobs:
             MONGO_INITDB_ROOT_PASSWORD="${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}"
             MONGO_EXPRESS_USERNAME="${{ secrets.MONGO_EXPRESS_USERNAME }}"
             MONGO_EXPRESS_PASSWORD="${{ secrets.MONGO_EXPRESS_PASSWORD }}"
-            MONGO_URI="${{ vars.MONGO_URI }}"
+            MONGO_URI="${{ secrets.MONGO_URI }}"
         
             # Create .env file if it doesn't exist
             if [ ! -f "$ENV_FILE" ]; then
