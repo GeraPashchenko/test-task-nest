@@ -9,15 +9,15 @@ import { GetResidentsRequestDto } from './dto/get-residents-request.dto';
 export class ResidentController {
   constructor(private readonly residentService: ResidentService) {}
 
-  @Get('')
-  @ApiOkResponse({
-    type: GetResidentsResponseDto,
-  })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
-    type: ErrorModelDto,
-  })
-  async getResidentsData(@Query() dto: GetResidentsRequestDto) {
-    return this.residentService.getResidentsData(dto.city, dto.skip, dto.take);
-  }
+  // @Get('')
+  // @ApiOkResponse({
+  //   type: GetResidentsResponseDto,
+  // })
+  // @ApiResponse({
+  //   status: HttpStatus.BAD_REQUEST,
+  //   type: ErrorModelDto,
+  // })
+  // async getResidentsData(@Query() dto: GetResidentsRequestDto) {
+  //   return this.residentService.getResidentsData(dto.city, dto.skip, dto.take);
+  // }
 }
