@@ -108,9 +108,11 @@ Now, you should be able to SSH into your instance without specifying the key eve
 
 ## What env params do you need to set in your GitHub repo for a CI/CD pipeline to work
 Secrets:
+
 <img width="786" alt="image" src="https://github.com/user-attachments/assets/4aa143cc-f5bd-43c8-9040-114cfa1dc286">
 
 Envs:
+
 <img width="820" alt="image" src="https://github.com/user-attachments/assets/e43f5578-dc83-4e45-8c63-8266b83a6ff9">
 
 
