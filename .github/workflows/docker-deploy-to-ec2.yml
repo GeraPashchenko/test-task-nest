@@ -90,20 +90,13 @@ jobs:
             else
               echo ".env file already exists."
             fi
-
-            echo "Listing files in the current directory:"
-            ls
           
             # Show .env file content if it exists
             if [ -f ".env" ]; then
-              echo "Showing .env file content:"
-              cat .env
+              echo ".env file is there"
             else
               echo ".env file does not exist."
             fi
-
-            echo "Listing files in the current directory after .env creation:"
-            ls
 
   # set-up-git-and-docker:
   #   runs-on: ubuntu-latest
@@ -194,15 +187,7 @@ jobs:
           cd ./${{ vars.PROJECT_FOLDER_NAME }}
 
           echo "Listing files in the current directory:"
-          ls
-
-          # Show .env file content if it exists
-          if [ -f ".env" ]; then
-            echo "Showing .env file content:"
-            cat .env
-          else
-            echo ".env file does not exist."
-          fi
+          ls -la
 
           # Run app
           echo "Starting the app with Docker..."
