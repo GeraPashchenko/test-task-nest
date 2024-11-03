@@ -36,6 +36,12 @@ jobs:
           echo "EC2_USER: ${{ secrets.EC2_USER }}"
           echo "EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}" | head -c 30  # Echo only the first 30 characters for verification
 
+      - name: SSH to EC2
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+          drone-ssh -i private_key.pem -h ${{ secrets.EC2_HOST }} -u ec2-user -p "echo 'Successfully connected to EC2!'"
+
       - name: Test SSH Key
         uses: appleboy/ssh-action@master
         with:
