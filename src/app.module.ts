@@ -4,12 +4,10 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configuration } from './config/configuration';
 import { validationSchema } from './config/validation';
-import { ResidentModule } from './resident/resident.module';
 import { ThrottlerModule, ThrottlerModuleOptions } from '@nestjs/throttler';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { RequestTimerMiddleware } from './common/middleware/request-timer.middleware';
-import { DatabaseModule } from './database/database.module';
 import { HttpModule } from '@nestjs/axios';
 import { FileModule } from './file/file.module';
 import { WebcamGateway } from './webcam/webcam.gateway';
@@ -32,8 +30,6 @@ import { WebcamGateway } from './webcam/webcam.gateway';
           limit: config.get('application.throttlerLimit'),
         } as unknown as ThrottlerModuleOptions),
     }),
-    ResidentModule,
-    DatabaseModule,
     FileModule,
   ],
   controllers: [AppController],
