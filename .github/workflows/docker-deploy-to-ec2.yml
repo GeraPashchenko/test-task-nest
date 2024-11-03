@@ -26,16 +26,25 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    needs: build
+    environment: dev
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Echo credentials (sanity check)
+        run: |
+          echo "EC2_HOST: ${{ secrets.EC2_HOST }}"
+          echo "EC2_USER: ${{ secrets.EC2_USER }}"
+          echo "EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}" | head -c 30  # Echo only the first 30 characters for verification
 
-      - name: Decode SSH key
-        run: echo "${{ secrets.EC2_SSH_KEY }}" | base64 --decode > aws-ec2-key.pem
-
-      - name: Set permissions
-        run: chmod 400 aws-ec2-key.pem
-
+      - name: Test SSH Key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "Connection successful!"
+            
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -47,37 +56,4 @@ jobs:
             docker-compose pull
             docker-compose down
             docker-compose up -d
-
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   environment: dev
-
-  #   steps:
-  #     - name: Echo credentials (sanity check)
-  #       run: |
-  #         echo "EC2_HOST: ${{ secrets.EC2_HOST }}"
-  #         echo "EC2_USER: ${{ secrets.EC2_USER }}"
-  #         echo "EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}" | head -c 30  # Echo only the first 30 characters for verification
-
-  #     - name: Test SSH Key
-  #       uses: appleboy/ssh-action@master
-  #       with:
-  #         host: ${{ secrets.EC2_HOST }}
-  #         username: ${{ secrets.EC2_USER }}
-  #         key: ${{ secrets.EC2_SSH_KEY }}
-  #         script: |
-  #           echo "Connection successful!"
-            
-  #     - name: Deploy to EC2
-  #       uses: appleboy/ssh-action@master
-  #       with:
-  #         host: ${{ secrets.EC2_HOST }}
-  #         username: ${{ secrets.EC2_USER }}
-  #         key: ${{ secrets.EC2_SSH_KEY }}
-  #         script: |
-  #           cd ./
-  #           docker-compose pull
-  #           docker-compose down
-  #           docker-compose up -d
 
