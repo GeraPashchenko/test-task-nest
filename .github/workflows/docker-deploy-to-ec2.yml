@@ -165,7 +165,7 @@ jobs:
               echo "    image: ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_DIR }}:latest" >> "$DOCKER_COMPOSE_FILE"
               echo "    container_name: myapp-container" >> "$DOCKER_COMPOSE_FILE"
               echo "    ports:" >> "$DOCKER_COMPOSE_FILE"
-              echo "      - \"\${PORT}:8080\"  # Map the port defined in .env" >> "$DOCKER_COMPOSE_FILE"
+              echo "      - \"8080:${PORT}\"  # Map the port defined in .env" >> "$DOCKER_COMPOSE_FILE"
               echo "    env_file:" >> "$DOCKER_COMPOSE_FILE"
               echo "      - .env" >> "$DOCKER_COMPOSE_FILE"
               echo "    restart: unless-stopped" >> "$DOCKER_COMPOSE_FILE"
@@ -191,6 +191,19 @@ jobs:
         script: |
           # Stop and remove existing containers
           sudo docker-compose down 
+
+          # Remove all stopped containers
+          # Check if docker-compose.yml exists
+          if [ -f "docker-compose.yml" ]; then
+              echo "Stopping and removing containers, networks, and volumes..."
+              sudo docker-compose down --volumes
+          else
+              echo "docker-compose.yml not found in the current directory."
+          fi
+          
+          # Remove all images
+          echo "Removing all Docker images..."
+          sudo docker rmi $(sudo docker images -q) || echo "No images to remove."
           
           # Build the Docker images
           echo "Building the Docker images..."
