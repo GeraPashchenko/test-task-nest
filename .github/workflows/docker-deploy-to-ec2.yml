@@ -140,8 +140,15 @@ jobs:
     environment: dev
     
     steps:
+      - name: Connect to EC2 instance
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+
       - name: List files in the current directory
-        run: ls -al
+        run: ls
       
       - name: Show .env file content
         run: cat .env
