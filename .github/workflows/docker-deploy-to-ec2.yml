@@ -41,6 +41,9 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            # Go to project folder
+            cd ./${{ vars.PROJECT_FOLDER_NAME }}
+            
             # Define your environment file path
             ENV_FILE=".env"
         
@@ -90,9 +93,6 @@ jobs:
 
             echo "Listing files in the current directory:"
             ls
-
-            # Go to project folder
-            cd ./${{ vars.PROJECT_FOLDER_NAME }}
           
             # Show .env file content if it exists
             if [ -f ".env" ]; then
