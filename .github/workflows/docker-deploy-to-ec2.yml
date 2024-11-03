@@ -175,6 +175,9 @@ jobs:
           # Go to project folder
           cd ./${{ vars.PROJECT_FOLDER_NAME }}
 
+          echo "Listing files in the current directory:"
+          ls
+
           # Show .env file content if it exists
           if [ -f ".env" ]; then
             echo "Showing .env file content:"
