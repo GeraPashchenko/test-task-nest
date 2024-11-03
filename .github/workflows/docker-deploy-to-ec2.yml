@@ -78,6 +78,36 @@ jobs:
           pwd
           echo "Files in directory:"
           ls -al
+
+          # Create .env file
+          if [ ! -f "$ENV_FILE" ]; then
+            echo "Creating .env file..."
+          
+            # Application env vars
+            echo "NODE_ENV=${{ vars.NODE_ENV }}" >> "$ENV_FILE"
+            echo "PORT=${{ vars.PORT }}" >> "$ENV_FILE"
+            echo "THROTTLE_LIMIT=${{ vars.THROTTLE_LIMIT }}" >> "$ENV_FILE"
+            echo "THROTTLE_TTL=${{ vars.THROTTLE_TTL }}" >> "$ENV_FILE"
+          
+            # Postgres
+            echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> "$ENV_FILE"
+            echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> "$ENV_FILE"
+            echo "POSTGRES_DB=${{ vars.POSTGRES_DB }}" >> "$ENV_FILE"
+            echo "POSTGRES_PORT=${{ vars.POSTGRES_PORT }}" >> "$ENV_FILE"
+            echo "POSTGRES_HOST=${{ vars.POSTGRES_HOST }}" >> "$ENV_FILE"
+          
+            # MongoDB
+            echo "MONGO_INITDB_ROOT_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }}" >> "$ENV_FILE"
+            echo "MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}" >> "$ENV_FILE"
+            echo "MONGO_EXPRESS_USERNAME=${{ secrets.MONGO_EXPRESS_USERNAME }}" >> "$ENV_FILE"
+            echo "MONGO_EXPRESS_PASSWORD=${{ secrets.MONGO_EXPRESS_PASSWORD }}" >> "$ENV_FILE"
+            
+            echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> "$ENV_FILE"
+          
+            echo ".env file created successfully."
+          else
+            echo ".env file already exists."
+          fi
           
           # Run Docker Compose commands
           docker-compose pull
