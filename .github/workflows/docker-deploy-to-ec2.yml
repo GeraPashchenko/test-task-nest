@@ -4,20 +4,6 @@ on:
       - main
 
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: executing remote ssh commands using SSH key
-        uses: appleboy/ssh-action@v0.1.7  # Or the latest version
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          port: 22
-          script_stop: true
-          script: ls -al  # Corrected command
-
   # build:
   #   environment: dev
   #   runs-on: ubuntu-latest
@@ -44,14 +30,14 @@ jobs:
     environment: dev
 
     steps:
-      - name: Echo credentials (sanity check)
-        run: |
-          echo "EC2_HOST: ${{ secrets.EC2_HOST }}"
-          echo "EC2_USER: ${{ secrets.EC2_USER }}"
-          echo "EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}" | head -c 30  # Echo only the first 30 characters for verification
+      # - name: Echo credentials (sanity check)
+      #   run: |
+      #     echo "EC2_HOST: ${{ secrets.EC2_HOST }}"
+      #     echo "EC2_USER: ${{ secrets.EC2_USER }}"
+      #     echo "EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}" | head -c 30  # Echo only the first 30 characters for verification
 
       - name: Deploy to EC2
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
