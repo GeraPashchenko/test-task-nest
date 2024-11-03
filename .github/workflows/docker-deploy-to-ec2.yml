@@ -4,127 +4,127 @@ on:
       - main
 
 jobs:
-  # build:
-  #   environment: dev
-  #   runs-on: ubuntu-latest
+  build:
+    environment: dev
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - name: Log in to Docker Hub
-  #       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-  #     - name: Build Docker image
-  #       run: docker build -t myapp:latest .
+      - name: Build Docker image
+        run: docker build -t myapp:latest .
 
-  #     - name: Tag Docker image
-  #       run: docker tag myapp:latest ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_DIR }}:latest
+      - name: Tag Docker image
+        run: docker tag myapp:latest ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_DIR }}:latest
 
-  #     - name: Push Docker image to Docker Hub
-  #       run: docker push ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_DIR }}:latest
+      - name: Push Docker image to Docker Hub
+        run: docker push ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_DIR }}:latest
 
 
-  # create-env:
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   environment: dev # secrets environment
+  create-env:
+    runs-on: ubuntu-latest
+    needs: build
+    environment: dev # secrets environment
     
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-  #     - name: Connect to EC2 instance
-  #       uses: appleboy/ssh-action@v1.0.3
-  #       with:
-  #         host: ${{ secrets.EC2_HOST }}
-  #         username: ${{ secrets.EC2_USER }}
-  #         key: ${{ secrets.EC2_SSH_KEY }}
+      - name: Connect to EC2 instance
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
 
-  #     - name: Create .env file
-  #       run: |
-  #         # Define your environment file path
-  #         ENV_FILE="./.env"
+      - name: Create .env file
+        run: |
+          # Define your environment file path
+          ENV_FILE="./.env"
       
-  #         # Assign GitHub variables to shell variables
-  #         NODE_ENV="${{ vars.NODE_ENV }}"
-  #         PORT="${{ vars.PORT }}"
-  #         THROTTLE_LIMIT="${{ vars.THROTTLE_LIMIT }}"
-  #         THROTTLE_TTL="${{ vars.THROTTLE_TTL }}"
-  #         POSTGRES_USER="${{ secrets.POSTGRES_USER }}"
-  #         POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
-  #         POSTGRES_DB="${{ vars.POSTGRES_DB }}"
-  #         POSTGRES_PORT="${{ vars.POSTGRES_PORT }}"
-  #         POSTGRES_HOST="${{ vars.POSTGRES_HOST }}"
-  #         MONGO_INITDB_ROOT_USERNAME="${{ secrets.MONGO_INITDB_ROOT_USERNAME }}"
-  #         MONGO_INITDB_ROOT_PASSWORD="${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}"
-  #         MONGO_EXPRESS_USERNAME="${{ secrets.MONGO_EXPRESS_USERNAME }}"
-  #         MONGO_EXPRESS_PASSWORD="${{ secrets.MONGO_EXPRESS_PASSWORD }}"
-  #         MONGO_URI="${{ vars.MONGO_URI }}"
+          # Assign GitHub variables to shell variables
+          NODE_ENV="${{ vars.NODE_ENV }}"
+          PORT="${{ vars.PORT }}"
+          THROTTLE_LIMIT="${{ vars.THROTTLE_LIMIT }}"
+          THROTTLE_TTL="${{ vars.THROTTLE_TTL }}"
+          POSTGRES_USER="${{ secrets.POSTGRES_USER }}"
+          POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
+          POSTGRES_DB="${{ vars.POSTGRES_DB }}"
+          POSTGRES_PORT="${{ vars.POSTGRES_PORT }}"
+          POSTGRES_HOST="${{ vars.POSTGRES_HOST }}"
+          MONGO_INITDB_ROOT_USERNAME="${{ secrets.MONGO_INITDB_ROOT_USERNAME }}"
+          MONGO_INITDB_ROOT_PASSWORD="${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}"
+          MONGO_EXPRESS_USERNAME="${{ secrets.MONGO_EXPRESS_USERNAME }}"
+          MONGO_EXPRESS_PASSWORD="${{ secrets.MONGO_EXPRESS_PASSWORD }}"
+          MONGO_URI="${{ vars.MONGO_URI }}"
       
-  #         # Create .env file if it doesn't exist
-  #         if [ ! -f "$ENV_FILE" ]; then
-  #           echo "Creating .env file..."
-  #           touch "$ENV_FILE"
+          # Create .env file if it doesn't exist
+          if [ ! -f "$ENV_FILE" ]; then
+            echo "Creating .env file..."
+            touch "$ENV_FILE"
             
-  #           # Write variables to .env file, using echo >> to avoid YAML indentation issues
-  #           echo "NODE_ENV=$NODE_ENV" >> "$ENV_FILE"
-  #           echo "PORT=$PORT" >> "$ENV_FILE"
-  #           echo "THROTTLE_LIMIT=$THROTTLE_LIMIT" >> "$ENV_FILE"
-  #           echo "THROTTLE_TTL=$THROTTLE_TTL" >> "$ENV_FILE"
+            # Write variables to .env file, using echo >> to avoid YAML indentation issues
+            echo "NODE_ENV=$NODE_ENV" >> "$ENV_FILE"
+            echo "PORT=$PORT" >> "$ENV_FILE"
+            echo "THROTTLE_LIMIT=$THROTTLE_LIMIT" >> "$ENV_FILE"
+            echo "THROTTLE_TTL=$THROTTLE_TTL" >> "$ENV_FILE"
             
-  #           echo "POSTGRES_USER=$POSTGRES_USER" >> "$ENV_FILE"
-  #           echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> "$ENV_FILE"
-  #           echo "POSTGRES_DB=$POSTGRES_DB" >> "$ENV_FILE"
-  #           echo "POSTGRES_PORT=$POSTGRES_PORT" >> "$ENV_FILE"
-  #           echo "POSTGRES_HOST=$POSTGRES_HOST" >> "$ENV_FILE"
+            echo "POSTGRES_USER=$POSTGRES_USER" >> "$ENV_FILE"
+            echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> "$ENV_FILE"
+            echo "POSTGRES_DB=$POSTGRES_DB" >> "$ENV_FILE"
+            echo "POSTGRES_PORT=$POSTGRES_PORT" >> "$ENV_FILE"
+            echo "POSTGRES_HOST=$POSTGRES_HOST" >> "$ENV_FILE"
             
-  #           echo "MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME" >> "$ENV_FILE"
-  #           echo "MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD" >> "$ENV_FILE"
-  #           echo "MONGO_EXPRESS_USERNAME=$MONGO_EXPRESS_USERNAME" >> "$ENV_FILE"
-  #           echo "MONGO_EXPRESS_PASSWORD=$MONGO_EXPRESS_PASSWORD" >> "$ENV_FILE"
-  #           echo "MONGO_URI=$MONGO_URI" >> "$ENV_FILE"
+            echo "MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME" >> "$ENV_FILE"
+            echo "MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD" >> "$ENV_FILE"
+            echo "MONGO_EXPRESS_USERNAME=$MONGO_EXPRESS_USERNAME" >> "$ENV_FILE"
+            echo "MONGO_EXPRESS_PASSWORD=$MONGO_EXPRESS_PASSWORD" >> "$ENV_FILE"
+            echo "MONGO_URI=$MONGO_URI" >> "$ENV_FILE"
       
-  #           echo ".env file created successfully."
-  #         else
-  #           echo ".env file already exists."
-  #         fi
+            echo ".env file created successfully."
+          else
+            echo ".env file already exists."
+          fi
   
-  # set-up-git-and-docker:
-  #   runs-on: ubuntu-latest
-  #   needs: create-env
-  #   environment: dev
+  set-up-git-and-docker:
+    runs-on: ubuntu-latest
+    needs: create-env
+    environment: dev
     
-  #   steps:
-  #     - name: Install Git + Docker + Docker-Compose to EC2 instance if not installed
-  #       uses: appleboy/ssh-action@v1.0.3
-  #       with:
-  #         host: ${{ secrets.EC2_HOST }}
-  #         username: ${{ secrets.EC2_USER }}
-  #         key: ${{ secrets.EC2_SSH_KEY }}
-  #         script: |
-  #           # Install Docker Compose if not already installed
-  #           if ! command -v docker-compose &> /dev/null; then
-  #             sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-  #             sudo chmod +x /usr/local/bin/docker-compose
-  #           fi
+    steps:
+      - name: Install Git + Docker + Docker-Compose to EC2 instance if not installed
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Install Docker Compose if not already installed
+            if ! command -v docker-compose &> /dev/null; then
+              sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+              sudo chmod +x /usr/local/bin/docker-compose
+            fi
             
-  #           # Install Git if not already installed
-  #           if ! command -v git &> /dev/null; then
-  #             sudo yum install -y git  # For Amazon Linux and RHEL-based distros
-  #             # OR use the following for Ubuntu-based distros
-  #             # sudo apt-get update && sudo apt-get install -y git
-  #           fi
+            # Install Git if not already installed
+            if ! command -v git &> /dev/null; then
+              sudo yum install -y git  # For Amazon Linux and RHEL-based distros
+              # OR use the following for Ubuntu-based distros
+              # sudo apt-get update && sudo apt-get install -y git
+            fi
             
-  #           # Verify installations
-  #           docker --version
-  #           docker-compose --version
-  #           git --version
+            # Verify installations
+            docker --version
+            docker-compose --version
+            git --version
 
 
   pull-image:
     runs-on: ubuntu-latest
-    # needs: set-up-git-and-docker
+    needs: set-up-git-and-docker
     environment: dev
     
     steps:
@@ -138,15 +138,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: pull-image
     environment: dev
-    
-    steps:
-      - name: Connect to EC2 instance
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
 
+    steps:
       - name: List files in the current directory
         run: ls
       
