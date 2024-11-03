@@ -29,23 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment: dev # secrets environment
-    env:
-      # Define GitHub variables and secrets as environment variables
-      NODE_ENV: ${{ vars.NODE_ENV }}
-      PORT: ${{ vars.PORT }}
-      THROTTLE_LIMIT: ${{ vars.THROTTLE_LIMIT }}
-      THROTTLE_TTL: ${{ vars.THROTTLE_TTL }}
-      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-      POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
-      POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
-      MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
-      MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
-      MONGO_EXPRESS_USERNAME: ${{ secrets.MONGO_EXPRESS_USERNAME }}
-      MONGO_EXPRESS_PASSWORD: ${{ secrets.MONGO_EXPRESS_PASSWORD }}
-      MONGO_URI: ${{ secrets.MONGO_URI }}
-
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -61,37 +45,51 @@ jobs:
         run: |
           # Define your environment file path
           ENV_FILE="./.env"
-
-          # Create .env file
+      
+          # Assign GitHub variables to shell variables
+          NODE_ENV="${{ vars.NODE_ENV }}"
+          PORT="${{ vars.PORT }}"
+          THROTTLE_LIMIT="${{ vars.THROTTLE_LIMIT }}"
+          THROTTLE_TTL="${{ vars.THROTTLE_TTL }}"
+          POSTGRES_USER="${{ secrets.POSTGRES_USER }}"
+          POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
+          POSTGRES_DB="${{ vars.POSTGRES_DB }}"
+          POSTGRES_PORT="${{ vars.POSTGRES_PORT }}"
+          POSTGRES_HOST="${{ vars.POSTGRES_HOST }}"
+          MONGO_INITDB_ROOT_USERNAME="${{ secrets.MONGO_INITDB_ROOT_USERNAME }}"
+          MONGO_INITDB_ROOT_PASSWORD="${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}"
+          MONGO_EXPRESS_USERNAME="${{ secrets.MONGO_EXPRESS_USERNAME }}"
+          MONGO_EXPRESS_PASSWORD="${{ secrets.MONGO_EXPRESS_PASSWORD }}"
+          MONGO_URI="${{ vars.MONGO_URI }}"
+      
+          # Create .env file if it doesn't exist
           if [ ! -f "$ENV_FILE" ]; then
             echo "Creating .env file..."
+            touch "$ENV_FILE"
             
-            # Create .env file
-            echo "Creating .env file..."
-            # Write variables to .env file
-            cat <<EOF > $ENV_FILE
-            NODE_ENV=$NODE_ENV
-            PORT=$PORT
-            THROTTLE_LIMIT=$THROTTLE_LIMIT
-            THROTTLE_TTL=$THROTTLE_TTL
+            # Write variables to .env file, using echo >> to avoid YAML indentation issues
+            echo "NODE_ENV=$NODE_ENV" >> "$ENV_FILE"
+            echo "PORT=$PORT" >> "$ENV_FILE"
+            echo "THROTTLE_LIMIT=$THROTTLE_LIMIT" >> "$ENV_FILE"
+            echo "THROTTLE_TTL=$THROTTLE_TTL" >> "$ENV_FILE"
             
-            POSTGRES_USER=$POSTGRES_USER
-            POSTGRES_PASSWORD=$POSTGRES_PASSWORD
-            POSTGRES_DB=$POSTGRES_DB
-            POSTGRES_PORT=$POSTGRES_PORT
-            POSTGRES_HOST=$POSTGRES_HOST
-            MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME
-            MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD
-            MONGO_EXPRESS_USERNAME=$MONGO_EXPRESS_USERNAME
-            MONGO_EXPRESS_PASSWORD=$MONGO_EXPRESS_PASSWORD
-            MONGO_URI=$MONGO_URI
-            EOF
-
-           echo ".env file created successfully."
+            echo "POSTGRES_USER=$POSTGRES_USER" >> "$ENV_FILE"
+            echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> "$ENV_FILE"
+            echo "POSTGRES_DB=$POSTGRES_DB" >> "$ENV_FILE"
+            echo "POSTGRES_PORT=$POSTGRES_PORT" >> "$ENV_FILE"
+            echo "POSTGRES_HOST=$POSTGRES_HOST" >> "$ENV_FILE"
+            
+            echo "MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME" >> "$ENV_FILE"
+            echo "MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD" >> "$ENV_FILE"
+            echo "MONGO_EXPRESS_USERNAME=$MONGO_EXPRESS_USERNAME" >> "$ENV_FILE"
+            echo "MONGO_EXPRESS_PASSWORD=$MONGO_EXPRESS_PASSWORD" >> "$ENV_FILE"
+            echo "MONGO_URI=$MONGO_URI" >> "$ENV_FILE"
+      
+            echo ".env file created successfully."
           else
             echo ".env file already exists."
           fi
-
+  
   set-up-git-and-docker:
     runs-on: ubuntu-latest
     needs: create-env
