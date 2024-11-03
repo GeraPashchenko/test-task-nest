@@ -48,30 +48,38 @@ jobs:
             sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
             sudo chmod +x /usr/local/bin/docker-compose
           fi
-
+          
+          # Install Git if not already installed
+          if ! command -v git &> /dev/null; then
+            sudo yum install -y git  # For Amazon Linux and RHEL-based distros
+            # OR use the following for Ubuntu-based distros
+            # sudo apt-get update && sudo apt-get install -y git
+          fi
+          
           # Verify installations
           docker --version
           docker-compose --version
-
+          git --version
+          
           # Clone the repository (if necessary)
           REPO_DIR="/home/test-task-nest" # Adjust this path as necessary
           if [ ! -d "$REPO_DIR" ]; then
             git clone https://github.com/GeraPashchenko/test-task-nest.git $REPO_DIR
           fi
-
+          
           # Change to the repository directory
-          cd $REPO_DIR
-
+          cd $REPO_DIR || exit
+          
           # Check current directory and list files
           echo "Current directory:"
           pwd
           echo "Files in directory:"
           ls -al
-
+          
           # Run Docker Compose commands
           docker-compose pull
           docker-compose down
           docker-compose up -d
           docker-compose down
           docker-compose up -d
-
+  
