@@ -9,7 +9,6 @@ export class AppController {
   @Get('/ping')
   @HttpCode(HttpStatus.OK)
   ping(@Res() res: Response) {
-    console.log('PINGED. ALL IS OK!!!');
-    res.status(HttpStatus.OK).send();
+    res.status(HttpStatus.OK).send({ message: 'PINGED. ALL IS OK!!!' });
   }
 }
