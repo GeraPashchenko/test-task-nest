@@ -53,6 +53,15 @@ jobs:
           docker --version
           docker-compose --version
 
+          # Clone the repository (if necessary)
+          REPO_DIR="/home/test-task-nest" # Adjust this path as necessary
+          if [ ! -d "$REPO_DIR" ]; then
+            git clone https://github.com/GeraPashchenko/test-task-nest.git $REPO_DIR
+          fi
+
+          # Change to the repository directory
+          cd $REPO_DIR
+
           # Check current directory and list files
           echo "Current directory:"
           pwd
@@ -60,7 +69,6 @@ jobs:
           ls -al
 
           # Run Docker Compose commands
-          cd ./
           docker-compose pull
           docker-compose down
           docker-compose up -d
