@@ -4,30 +4,30 @@ on:
       - main
 
 jobs:
-  build:
-    environment: dev
-    runs-on: ubuntu-latest
+  # build:
+  #   environment: dev
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
-      - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+  #     - name: Log in to Docker Hub
+  #       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: Build Docker image
-        run: docker build -t myapp:latest .
+  #     - name: Build Docker image
+  #       run: docker build -t myapp:latest .
 
-      - name: Tag Docker image
-        run: docker tag myapp:latest ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_DIR }}:latest
+  #     - name: Tag Docker image
+  #       run: docker tag myapp:latest ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_DIR }}:latest
 
-      - name: Push Docker image to Docker Hub
-        run: docker push ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_DIR }}:latest
+  #     - name: Push Docker image to Docker Hub
+  #       run: docker push ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_DIR }}:latest
 
 
   create-env:
     runs-on: ubuntu-latest
-    needs: build
+    # needs: build
     environment: dev # secrets environment
     
     steps:
@@ -41,7 +41,6 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            |
             # Define your environment file path
             ENV_FILE=".env"
         
@@ -98,67 +97,67 @@ jobs:
               echo ".env file does not exist."
             fi
 
-  set-up-git-and-docker:
-    runs-on: ubuntu-latest
-    needs: create-env
-    environment: dev
+  # set-up-git-and-docker:
+  #   runs-on: ubuntu-latest
+  #   needs: create-env
+  #   environment: dev
     
-    steps:
-      - name: Connect to EC2 instance
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+  #   steps:
+  #     - name: Connect to EC2 instance
+  #       uses: appleboy/ssh-action@v1.0.3
+  #       with:
+  #         host: ${{ secrets.EC2_HOST }}
+  #         username: ${{ secrets.EC2_USER }}
+  #         key: ${{ secrets.EC2_SSH_KEY }}
         
-      - name: Install Git + Docker + Docker-Compose to EC2 instance if not installed
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            # Install Docker Compose if not already installed
-            if ! command -v docker-compose &> /dev/null; then
-              sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-              sudo chmod +x /usr/local/bin/docker-compose
-            fi
+  #     - name: Install Git + Docker + Docker-Compose to EC2 instance if not installed
+  #       uses: appleboy/ssh-action@v1.0.3
+  #       with:
+  #         host: ${{ secrets.EC2_HOST }}
+  #         username: ${{ secrets.EC2_USER }}
+  #         key: ${{ secrets.EC2_SSH_KEY }}
+  #         script: |
+  #           # Install Docker Compose if not already installed
+  #           if ! command -v docker-compose &> /dev/null; then
+  #             sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  #             sudo chmod +x /usr/local/bin/docker-compose
+  #           fi
             
-            # Install Git if not already installed
-            if ! command -v git &> /dev/null; then
-              sudo yum install -y git  # For Amazon Linux and RHEL-based distros
-              # OR use the following for Ubuntu-based distros
-              # sudo apt-get update && sudo apt-get install -y git
-            fi
+  #           # Install Git if not already installed
+  #           if ! command -v git &> /dev/null; then
+  #             sudo yum install -y git  # For Amazon Linux and RHEL-based distros
+  #             # OR use the following for Ubuntu-based distros
+  #             # sudo apt-get update && sudo apt-get install -y git
+  #           fi
             
-            # Verify installations
-            docker --version
-            docker-compose --version
-            git --version
+  #           # Verify installations
+  #           docker --version
+  #           docker-compose --version
+  #           git --version
 
 
-  pull-image:
-    runs-on: ubuntu-latest
-    needs: set-up-git-and-docker
-    environment: dev
+  # pull-image:
+  #   runs-on: ubuntu-latest
+    # needs: set-up-git-and-docker
+  #   environment: dev
     
-    steps:
-      - name: Connect to EC2 instance
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+  #   steps:
+  #     - name: Connect to EC2 instance
+  #       uses: appleboy/ssh-action@v1.0.3
+  #       with:
+  #         host: ${{ secrets.EC2_HOST }}
+  #         username: ${{ secrets.EC2_USER }}
+  #         key: ${{ secrets.EC2_SSH_KEY }}
         
-      - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+  #     - name: Log in to Docker Hub
+  #       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
   
-      - name: Pull Docker image from Docker Hub
-        run: docker pull ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_DIR }}:latest
+  #     - name: Pull Docker image from Docker Hub
+  #       run: docker pull ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_DIR }}:latest
 
   run-image:
     runs-on: ubuntu-latest
-    needs: pull-image
+    # needs: pull-image
     environment: dev
 
     steps:
@@ -173,6 +172,9 @@ jobs:
           echo "Listing files in the current directory:"
           ls
 
+          # Go to project folder
+          cd ./${{ vars.PROJECT_FOLDER_NAME }}
+
           # Show .env file content if it exists
           if [ -f ".env" ]; then
             echo "Showing .env file content:"
@@ -183,7 +185,5 @@ jobs:
 
           # Run app
           echo "Starting the app with Docker..."
-          docker run -d --name app-container \
-            --env-file .env \
-            -p ${{ vars.PORT }}:${{ vars.PORT }} \
+          docker run -d --env-file .env -p ${{ vars.PORT }}:${{ vars.PORT }} \
             ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_DIR }}:latest
