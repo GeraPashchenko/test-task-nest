@@ -193,3 +193,7 @@ jobs:
           echo "Starting the app with Docker..."
           sudo docker run -d --env-file .env -p ${{ vars.PORT }}:${{ vars.PORT }} \
             ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_DIR }}:latest
+
+          docker-compose up -d
+
+          docker ps
