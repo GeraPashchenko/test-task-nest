@@ -191,5 +191,5 @@ jobs:
 
           # Run app
           echo "Starting the app with Docker..."
-          docker run -d --env-file .env -p ${{ vars.PORT }}:${{ vars.PORT }} \
+          sudo docker run -d --env-file .env -p ${{ vars.PORT }}:${{ vars.PORT }} \
             ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_DIR }}:latest
