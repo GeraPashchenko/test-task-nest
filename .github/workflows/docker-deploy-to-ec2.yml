@@ -62,12 +62,6 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" > ec2_key.pem
           chmod 600 ec2_key.pem
 
-      - name: Connect to EC2
-        run: |
-          ssh -i ec2_key.pem ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
-            echo "Successfully connected to EC2!"
-          EOF
-
 
       - name: Connect to EC2 using SSH
         run: |
