@@ -61,11 +61,14 @@ jobs:
           docker-compose --version
           git --version
           
-          # Clone the repository (if necessary)
-          REPO_DIR="/home/test-task-nest" # Adjust this path as necessary
+          # Use a directory inside your home folder for cloning the repo
+          REPO_DIR="$HOME/test-task-nest" # Adjust this path as necessary
           if [ ! -d "$REPO_DIR" ]; then
-            git clone https://github.com/GeraPashchenko/test-task-nest.git $REPO_DIR
+            git clone https://github.com/GeraPashchenko/test-task-nest.git "$REPO_DIR"
           fi
+          
+          # Change to the repository directory
+          cd "$REPO_DIR" || exit
           
           # Change to the repository directory
           cd $REPO_DIR || exit
