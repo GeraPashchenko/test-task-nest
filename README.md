@@ -1,11 +1,18 @@
 # Table of contents
+[Project description](#project-description)
+[How to set up an architecture for a deployment](#how-to-set-up-an-architecture-for-a-deployment)
+[How to configure your local machine to have an access to EC2](#how-to-configure-your-local-machine-to-have-an-access-to-ec2)
+[What env params do you need to set in your GitHub repo for a CI/CD pipeline to work](#what-env-params-do-you-need-to-set-in-your-github-repo-for-a-ci/cd-pipeline-to-work)
+[How to test this project on web](#how-to-test-this-project-on-web)
 
 ## Project description
    - This project has a CI/CD pipeline to deploy code to the EC2 instance.
    - Also a pipeline to lint and test
    - TBD....
 
-## How to set up architecture for a deployment?
+---
+
+## How to set up an architecture for a deployment
 Follow these steps to configure your own infra for a ddeployments:
 * Create an AWS account
 * Go to AWS EC2 and create a security group firstly (or change the existing one)
@@ -15,6 +22,8 @@ Follow these steps to configure your own infra for a ddeployments:
 * Create a key-pair in EC2 and store it on your local machine
 * Create an EC2 instance using createad security-group and key-pair
 * Create an elastic-ip in EC2 and attach it to your EC2 instance
+
+---
 
 ## How to configure your local machine to have an access to EC2
 On Mac: 
@@ -95,6 +104,7 @@ Now, you should be able to SSH into your instance without specifying the key eve
 2. **Access Denied**: Confirm you’re using the correct default username for your EC2 instance's operating system.
 3. **No SSH Connection**: Ensure your EC2 instance’s security group allows inbound SSH traffic on port 22 (source IP 0.0.0.0/0 for open access or restrict it to your IP).
 
+---
 
 ## What env params do you need to set in your GitHub repo for a CI/CD pipeline to work
 Secrets:
@@ -103,8 +113,6 @@ Secrets:
 Envs:
 <img width="820" alt="image" src="https://github.com/user-attachments/assets/e43f5578-dc83-4e45-8c63-8266b83a6ff9">
 
-
-## [How to test this project](#how-to-test-this-project)
 
 ---
 
