@@ -36,24 +36,43 @@ jobs:
           echo "EC2_USER: ${{ secrets.EC2_USER }}"
           echo "EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}" | head -c 30  # Echo only the first 30 characters for verification
 
-      - name: Test SSH Key
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            echo "Connection successful!"
+      # - name: Test SSH Key
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.EC2_HOST }}
+      #     username: ${{ secrets.EC2_USER }}
+      #     key: ${{ secrets.EC2_SSH_KEY }}
+      #     script: |
+      #       echo "Connection successful!"
             
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@v0.1.0
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            cd ./
-            docker-compose pull
-            docker-compose down
-            docker-compose up -d
+      # - name: Deploy to EC2
+      #   uses: appleboy/ssh-action@v0.1.0
+      #   with:
+      #     host: ${{ secrets.EC2_HOST }}
+      #     username: ${{ secrets.EC2_USER }}
+      #     key: ${{ secrets.EC2_SSH_KEY }}
+      #     script: |
+      #       cd ./
+      #       docker-compose pull
+      #       docker-compose down
+      #       docker-compose up -d
+
+      - name: Set up SSH key
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" > ec2_key.pem
+          chmod 600 ec2_key.pem
+
+      - name: Connect to EC2
+        run: |
+          ssh -i ec2_key.pem ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+            echo "Successfully connected to EC2!"
+          EOF
+
+
+      - name: Connect to EC2 using SSH
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ec2_key.pem ec2-user@${{ secrets.EC2_HOST }} "echo 'Successfully connected to EC2!'"
+
+      - name: Clean up SSH key
+        run: rm -f ec2_key.pem
 
